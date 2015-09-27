@@ -62,6 +62,7 @@ public class ImageSearchActivity extends AppCompatActivity {
         if (actionBar != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             actionBar.setLogo(R.mipmap.ic_lens);
+            actionBar.setTitle("  " + getTitle());
             getSupportActionBar().setDisplayUseLogoEnabled(true);
         }
 
@@ -128,7 +129,10 @@ public class ImageSearchActivity extends AppCompatActivity {
                 Intent i = new Intent(ImageSearchActivity.this, ImageDisplayActivity.class);
                 //Get the image result to display
                 ImageResult imageResult = imageResults.get(position);
+                i.putExtra(Intent.EXTRA_SUBJECT, "SUBJECT");
+                i.putExtra(Intent.EXTRA_TEXT,"Extra Text");
                 i.putExtra("image", imageResult);
+
                 //launch the new activity
                 startActivity(i);
             }
@@ -170,6 +174,13 @@ public class ImageSearchActivity extends AppCompatActivity {
                 //Log.d("DEBUG: ", errorResponse.toString());
                 if (throwable.getMessage().contains("UnknownHostException")) {
                     showErrorDialog(getString(R.string.network_error), getString(R.string.server_unavailable));
+                }
+                else if (statusCode == 404) {
+                    showErrorDialog(getString(R.string.network_error), getString(R.string.service_not_available));
+                }
+                else {
+                    showErrorDialog(getString(R.string.network_error), throwable.getCause().toString());
+                    throwable.printStackTrace();
                 }
 
             }

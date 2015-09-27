@@ -1,7 +1,6 @@
 package com.alinc.gridimagesearch.adapters;
 
 import android.content.Context;
-import android.media.Image;
 import android.text.Html;
 import android.util.Log;
 import android.util.SparseArray;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alinc.gridimagesearch.R;
@@ -55,7 +53,10 @@ public class ImageResultsAdapter extends ArrayAdapter<ImageResult> {
         }
 
         double positionHeight = getPositionRatio(position);
-        vh.imgView.setHeightRatio(positionHeight);
+        float heightRatio=(float)imageInfo.height / (float)imageInfo.width;
+        final int viewWidth = imageInfo.width;
+        final int viewHeight=(int)(viewWidth * positionHeight);
+        vh.imgView.setHeightRatio(heightRatio);
 
         Picasso.with(getContext()).load(imageInfo.thumbUrl).into(vh.imgView);
 
