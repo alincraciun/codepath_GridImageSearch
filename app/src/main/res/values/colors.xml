@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="transparent">#00000000</color>
-    <color name="blue_transparent">#CC99CCFF</color>
+    <color name="blue_transparent">#F299CCFF</color>
+
+    <color name="dark_blue">#180065</color>
+    <color name="light_blue">#334ee9ff</color>
+    <color name="medium_green">#3d853e</color>
+    <color name="light_green">#3c2ae668</color>
+    <color name="super_light_blue">#E6CCFFFF</color>
+    <color name="transparent_black">#99000000</color>
+    <color name="transparent_green">#EBF5CC</color>
+
 </resources>

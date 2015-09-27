@@ -13,15 +13,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textSize="14sp"
-        android:textColor="#000000"
-        android:paddingTop="15dp"
+        android:textColor="@color/dark_blue"
         android:paddingRight="15dp"
         android:paddingLeft="15dp"
         android:layout_above="@+id/tvColorFilter"
+        android:layout_alignBaseline="@+id/spImageSize"
         android:singleLine="true"
-        android:padding="15dp"
-        android:paddingBottom="15dp"
-        android:gravity="center_vertical|center_horizontal" />
+        android:typeface="monospace"
+        android:gravity="left"/>
 
     <Spinner
         style="@android:style/Widget.Holo.Spinner"
@@ -31,31 +30,32 @@
         android:layout_toEndOf="@+id/tvImageSize"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:paddingEnd="15dp"
         android:paddingTop="15dp"
         android:paddingRight="15dp"
         android:textSize="14sp"
         android:spinnerMode="dropdown"
         android:layout_toRightOf="@+id/tvImageSize"
-        android:popupBackground="#CCD8D8DC"/>
+        android:entries="@array/image_size_array"
+        android:gravity="left" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tvColorFilter"
         android:id="@+id/tvColorFilter"
-        android:paddingTop="15dp"
         android:paddingRight="15dp"
         android:paddingLeft="15dp"
         android:textSize="14sp"
-        android:textColor="#000000"
+        android:textColor="@color/dark_blue"
         android:layout_alignTop="@+id/spColorFilter"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignBottom="@+id/spColorFilter"
+        android:layout_alignBaseline="@+id/spColorFilter"
         android:layout_toLeftOf="@+id/spImageType"
         android:layout_toStartOf="@+id/spImageType"
-        android:padding="15dp"
-        android:paddingBottom="15dp"
-        android:gravity="center_vertical|center_horizontal" />
+        android:typeface="monospace"
+        android:gravity="left" />
 
     <Spinner
         style="@android:style/Widget.Holo.Spinner"
@@ -71,26 +71,27 @@
         android:paddingRight="15dp"
         android:textSize="14sp"
         android:spinnerMode="dropdown"
-        android:popupBackground="#CCD8D8DC"/>
+        android:entries="@array/color_filter_array"
+        android:gravity="left" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tvImageType"
         android:id="@+id/tvImageType"
-        android:textColor="#000000"
-        android:paddingTop="15dp"
+        android:textColor="@color/dark_blue"
         android:paddingRight="15dp"
         android:paddingLeft="15dp"
         android:layout_alignTop="@+id/spImageType"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignBottom="@+id/spImageType"
+        android:layout_alignBaseline="@+id/spImageType"
         android:layout_toLeftOf="@+id/spImageSize"
         android:layout_toStartOf="@+id/spImageSize"
-        android:padding="15dp"
-        android:paddingBottom="15dp"
-        android:gravity="center_vertical|center_horizontal" />
+        android:typeface="monospace"
+        android:gravity="left"
+        android:textSize="14sp" />
 
     <Spinner
         style="@android:style/Widget.Holo.Spinner"
@@ -103,10 +104,10 @@
         android:layout_toRightOf="@+id/tvImageType"
         android:layout_toEndOf="@+id/tvImageType"
         android:paddingTop="15dp"
-        android:paddingRight="15dp"
         android:textSize="14sp"
         android:spinnerMode="dropdown"
-        android:popupBackground="#CCD8D8DC"/>
+        android:entries="@array/image_type_array"
+        android:gravity="left" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -116,26 +117,72 @@
         android:layout_below="@+id/tvImageType"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:padding="15dp"
         android:paddingLeft="15dp"
-        android:paddingTop="15dp"
         android:paddingRight="15dp"
         android:paddingBottom="15dp"
-        android:gravity="center_vertical|center_horizontal"
-        android:textColor="#000000"/>
+        android:gravity="left"
+        android:layout_alignParentBottom="false"
+        android:textColor="@color/dark_blue"
+        android:textSize="14sp"
+        android:layout_marginTop="15dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:theme="@style/filterEditText"
         android:id="@+id/etSiteFilter"
-        android:layout_toRightOf="@+id/tvSiteFilter"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/spImageType"
-        android:textColor="#000000"
+        android:textColor="@color/material_blue_grey_800"
         android:layout_alignBottom="@+id/tvSiteFilter"
-        android:textSize="14sp"/>
+        android:layout_alignBaseline="@+id/tvSiteFilter"
+        android:textSize="14sp"
+        android:typeface="monospace"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="12dp"
+        android:phoneNumber="false"
+        android:capitalize="characters"
+        android:gravity="left"
+        android:singleLine="true"
+        android:layout_alignLeft="@+id/spImageType"
+        android:layout_alignStart="@+id/spImageType"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_button"
+        android:id="@+id/btSave"
+        android:layout_below="@+id/spImageType"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="60dp"
+        android:layout_marginBottom="20dp"
+        android:typeface="monospace"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/filter_button"
+        android:textColor="#FFFFFF"
+        android:paddingRight="7dp"
+        android:paddingLeft="7dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel_button"
+        android:id="@+id/btCancel"
+        android:layout_alignTop="@+id/btSave"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:typeface="monospace"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/filter_button"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
 
 
 </RelativeLayout>

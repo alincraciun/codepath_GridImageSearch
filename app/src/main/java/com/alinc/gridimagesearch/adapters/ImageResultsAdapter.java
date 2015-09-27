@@ -58,7 +58,7 @@ public class ImageResultsAdapter extends ArrayAdapter<ImageResult> {
         final int viewHeight=(int)(viewWidth * positionHeight);
         vh.imgView.setHeightRatio(heightRatio);
 
-        Picasso.with(getContext()).load(imageInfo.thumbUrl).into(vh.imgView);
+        Picasso.with(getContext()).load(imageInfo.thumbUrl).placeholder(R.drawable.loading).into(vh.imgView);
 
         //ImageView ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
         //TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);

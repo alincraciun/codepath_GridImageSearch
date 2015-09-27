@@ -2,30 +2,31 @@ package com.alinc.gridimagesearch.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alinc.gridimagesearch.R;
 import com.alinc.gridimagesearch.adapters.ImageResultsAdapter;
+import com.alinc.gridimagesearch.fragments.SearchFiltersDialog;
 import com.alinc.gridimagesearch.listeners.EndlessScrollListener;
 import com.alinc.gridimagesearch.models.ImageResult;
 import com.etsy.android.grid.StaggeredGridView;
@@ -40,7 +41,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class ImageSearchActivity extends AppCompatActivity {
+public class ImageSearchActivity extends AppCompatActivity implements SearchFiltersDialog.OnCompleteListener {
+    private static final int REQUEST_CODE = 100;
     private EditText etQuery;
     private StaggeredGridView gvResults;
     private ArrayList<ImageResult> imageResults;
@@ -53,6 +55,7 @@ public class ImageSearchActivity extends AppCompatActivity {
     private EndlessScrollListener endlessScrollListener;
     private String TAG = ImageSearchActivity.class.getName();
     private String query = "";
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,7 @@ public class ImageSearchActivity extends AppCompatActivity {
             setContentView(R.layout.activity_image_search);
             setupViews();
 
-            final EditText etSearchKey = (EditText) findViewById(R.id.etQuery);
+            /*final EditText etSearchKey = (EditText) findViewById(R.id.etQuery);
             etSearchKey.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -98,7 +101,7 @@ public class ImageSearchActivity extends AppCompatActivity {
                     }
                     return false;
                 }
-            });
+            });*/
             imageResults = new ArrayList<ImageResult>();
             imageResultsAdapter = new ImageResultsAdapter(this, imageResults);
             gvResults.setAdapter(imageResultsAdapter);
@@ -118,7 +121,7 @@ public class ImageSearchActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
-        etQuery = (EditText) findViewById(R.id.etQuery);
+        //etQuery = (EditText) findViewById(R.id.etQuery);
         gvResults = (StaggeredGridView) findViewById(R.id.sgvResults);
 
         gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -130,7 +133,7 @@ public class ImageSearchActivity extends AppCompatActivity {
                 //Get the image result to display
                 ImageResult imageResult = imageResults.get(position);
                 i.putExtra(Intent.EXTRA_SUBJECT, "SUBJECT");
-                i.putExtra(Intent.EXTRA_TEXT,"Extra Text");
+                i.putExtra(Intent.EXTRA_TEXT, "Extra Text");
                 i.putExtra("image", imageResult);
 
                 //launch the new activity
@@ -141,9 +144,9 @@ public class ImageSearchActivity extends AppCompatActivity {
 
     //Fire Search action
     public void onImageSearch() {
-        query = etQuery.getText().toString();
         AsyncHttpClient client = new AsyncHttpClient();
         client.setTimeout(5000);
+        query = query.replaceAll("%2B", " ");
         try {
             query = URLEncoder.encode(query, "UTF-8");
         } catch (UnsupportedEncodingException e) {
@@ -162,6 +165,7 @@ public class ImageSearchActivity extends AppCompatActivity {
                         imageResults.clear(); //clear the existing images from array, when a new search
                     }
                     imageResultsAdapter.addAll(ImageResult.fromJSONArray(imageResultsJson));
+                    imageResultsAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -174,11 +178,9 @@ public class ImageSearchActivity extends AppCompatActivity {
                 //Log.d("DEBUG: ", errorResponse.toString());
                 if (throwable.getMessage().contains("UnknownHostException")) {
                     showErrorDialog(getString(R.string.network_error), getString(R.string.server_unavailable));
-                }
-                else if (statusCode == 404) {
+                } else if (statusCode == 404) {
                     showErrorDialog(getString(R.string.network_error), getString(R.string.service_not_available));
-                }
-                else {
+                } else {
                     showErrorDialog(getString(R.string.network_error), throwable.getCause().toString());
                     throwable.printStackTrace();
                 }
@@ -191,8 +193,28 @@ public class ImageSearchActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_image_search, menu);
-        return true;
-    }
+       MenuItem searchItem = menu.findItem(R.id.action_search);
+       searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+       searchView.setIconified(true);
+       searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+           @Override
+           public boolean onQueryTextSubmit(String query) {
+               startPage = 0;
+               ImageSearchActivity.this.query = query;
+               endlessScrollListener.reset(0, true);
+               onImageSearch();
+               return true;
+           }
+
+           @Override
+           public boolean onQueryTextChange(String newText) {
+               return false;
+           }
+       });
+
+       return super.onCreateOptionsMenu(menu);
+
+   }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -211,6 +233,19 @@ public class ImageSearchActivity extends AppCompatActivity {
     }
 
     private void showFilterDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        SearchFiltersDialog searchFilter = SearchFiltersDialog.newInstance();
+        Bundle args = new Bundle();
+        args.putString("imageSize", imageSize);
+        args.putString("imageType", imageType);
+        args.putString("colorFilter", colorFilter);
+        args.putString("siteFilter", siteFilter);
+        searchFilter.setArguments(args);
+        searchFilter.show(fm, "filter_fragment");
+    }
+
+    /*private void showFilterDialog() {
+
         LayoutInflater inflater = LayoutInflater.from(ImageSearchActivity.this);
         final View filterView = inflater.inflate(R.layout.filter_fragment, null);
 
@@ -254,19 +289,7 @@ public class ImageSearchActivity extends AppCompatActivity {
         setSpinnerToValue(spColorFilter, colorFilter);
         tvSiteFilter.setText(siteFilter);
         dialog.show();
-    }
-
-    public void setSpinnerToValue(Spinner spinner, String value) {
-        int index = 0;
-        SpinnerAdapter adapter = spinner.getAdapter();
-        for (int i = 0; i < adapter.getCount(); i++) {
-            if (adapter.getItem(i).equals(value)) {
-                index = i;
-                break; // terminate loop
-            }
-        }
-        spinner.setSelection(index);
-    }
+    } */
 
     public void loadNextPage() {
         if(startPage < 56) {
@@ -292,5 +315,23 @@ public class ImageSearchActivity extends AppCompatActivity {
                 .setMessage(errorMessage);
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void onComplete(String spImageSize, String spImageType, String spColorFilter, String etSiteFilter) {
+        this.imageSize = spImageSize;
+        this.imageType = spImageType;
+        this.colorFilter = spColorFilter;
+        this.siteFilter = etSiteFilter;
+
+        if (!query.isEmpty()) {
+            imageResultsAdapter.clear();
+            onImageSearch();
+        }
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
     }
 }
