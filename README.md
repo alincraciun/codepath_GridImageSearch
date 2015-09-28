@@ -42,19 +42,19 @@ Here's a walkthrough of implemented user stories:
 
 * Search for images and "endless" pagination
 
-<img src='resources/raw/superPics_userStory1.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='raw/superPics_userStory1.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 * Filter search with persistent filters
 
-<img src='resources/raw/superPics_userStory2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='raw/superPics_userStory2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 * Detailed View, zoom on image and share
 
-<img src='resources/raw/superPics_userStory3.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='raw/superPics_userStory3.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 * Network error handling
 
-<img src='resources/raw/superPics_userStory4.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='raw/superPics_userStory4.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
 
