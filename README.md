@@ -22,9 +22,9 @@ The following **required** functionality is completed:
 The following **optional** features are implemented:
 
 * [x] Implements robust error handling, [check if internet is available](http://guides.codepath.com/android/Sending-and-Managing-Network-Requests#checking-for-network-connectivity), handle error cases, network failures
-* [ ] Used the **ActionBar SearchView** or custom layout as the query box instead of an EditText
+* [x] Used the **ActionBar SearchView** or custom layout as the query box instead of an EditText
 * [x] User can **share an image** to their friends or email it to themselves
-* [ ] Replaced Filter Settings Activity with a lightweight modal overlay
+* [x] Replaced Filter Settings Activity with a lightweight modal overlay
 * [x] Improved the user interface and experiment with image assets and/or styling and coloring
 
 The following **bonus** features are implemented:
@@ -40,7 +40,24 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+* Search for images and "endless" pagination
+
+<img src='resources/raw/superPics_userStory1.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+* Filter search with persistent filters
+
+<img src='resources/raw/superPics_userStory2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+* Detailed View, zoom on image and share
+
+<img src='resources/raw/superPics_userStory3.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+* Network error handling
+
+<img src='resources/raw/superPics_userStory4.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+
+
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
